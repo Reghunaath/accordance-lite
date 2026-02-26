@@ -1,0 +1,15 @@
+{
+  "name": "accordance-lite",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI-powered tax research assistant",
+  "scripts": {
+    "dev": "concurrently -n server,client -c blue,green \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "install:all": "npm install --prefix server && npm install --prefix client",
+    "lint": "npm run lint --prefix client && npm run lint --prefix server",
+    "build": "npm run build --prefix client && npm run build --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
