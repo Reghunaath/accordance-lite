@@ -1,10 +1,6 @@
 import ThreadItem from './ThreadItem';
-
-interface Thread {
-  id: string;
-  title: string;
-  timestamp: string;
-}
+import { formatRelativeTime } from '../utils/time';
+import type { Thread } from '../types';
 
 interface ThreadListProps {
   threads: Thread[];
@@ -26,7 +22,7 @@ export default function ThreadList({ threads, activeThreadId, onSelectThread, on
           <ThreadItem
             key={thread.id}
             title={thread.title}
-            timestamp={thread.timestamp}
+            timestamp={formatRelativeTime(thread.updated_at)}
             isActive={thread.id === activeThreadId}
             onClick={() => onSelectThread(thread.id)}
             onDelete={() => onDeleteThread(thread.id)}

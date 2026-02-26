@@ -2,12 +2,7 @@ import SidebarHeader from './SidebarHeader';
 import NewThreadButton from './NewThreadButton';
 import ThreadList from './ThreadList';
 import UserFooter from './UserFooter';
-
-interface Thread {
-  id: string;
-  title: string;
-  timestamp: string;
-}
+import type { Thread } from '../types';
 
 interface SidebarProps {
   threads: Thread[];
