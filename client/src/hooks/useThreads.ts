@@ -5,12 +5,14 @@ import * as api from '../utils/api';
 interface UseThreadsReturn {
   threads: Thread[];
   activeThread: Thread | null;
-  activeMessages: Message[];
   loading: boolean;
   selectThread: (id: string) => Promise<void>;
-  createAndSendMessage: (content: string) => Promise<void>;
+  createThread: (content: string) => Promise<string>;
   deleteThread: (id: string) => Promise<void>;
   clearActiveThread: () => void;
+  refreshThreads: () => Promise<void>;
+  setActiveMessages: (messages: Message[]) => void;
+  activeMessages: Message[];
 }
 
 export function useThreads(): UseThreadsReturn {
@@ -44,22 +46,12 @@ export function useThreads(): UseThreadsReturn {
     }
   }, []);
 
-  const createAndSendMessage = useCallback(async (content: string) => {
-    try {
-      // Create a new thread with a placeholder title
-      const { thread } = await api.createThread(content.substring(0, 60));
-
-      // Send the message (this will also update the thread title on the server)
-      const { userMessage, assistantMessage } = await api.sendMessage(thread.id, content);
-
-      // Update local state
-      setActiveThread({ ...thread, title: content.substring(0, 60) });
-      setActiveMessages([userMessage, assistantMessage]);
-      await loadThreads();
-    } catch (err) {
-      console.error('Failed to create thread and send message:', err);
-    }
-  }, [loadThreads]);
+  const createNewThread = useCallback(async (content: string): Promise<string> => {
+    const { thread } = await api.createThread(content.substring(0, 60));
+    setActiveThread(thread);
+    setActiveMessages([]);
+    return thread.id;
+  }, []);
 
   const handleDeleteThread = useCallback(async (id: string) => {
     try {
@@ -85,8 +77,10 @@ export function useThreads(): UseThreadsReturn {
     activeMessages,
     loading,
     selectThread,
-    createAndSendMessage,
+    createThread: createNewThread,
     deleteThread: handleDeleteThread,
     clearActiveThread,
+    refreshThreads: loadThreads,
+    setActiveMessages,
   };
 }

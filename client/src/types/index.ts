@@ -45,8 +45,3 @@ export interface ThreadDetailResponse {
 export interface CreateThreadResponse {
   thread: Thread;
 }
-
-export interface SendMessageResponse {
-  userMessage: Message;
-  assistantMessage: Message;
-}

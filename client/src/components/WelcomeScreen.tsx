@@ -30,7 +30,7 @@ export default function WelcomeScreen({ onSendMessage }: WelcomeScreenProps) {
           <span className="material-symbols-outlined text-[28px]">smart_toy</span>
         </div>
         <h2 className="text-3xl font-semibold text-slate-900 tracking-tight">
-          {getGreeting()}, David.
+          {getGreeting()}, Reghunaath.
         </h2>
         <p className="text-slate-500 text-lg font-light">How can I be of service today?</p>
       </div>

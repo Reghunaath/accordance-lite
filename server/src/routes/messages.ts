@@ -30,8 +30,44 @@ const upload = multer({
 
 const router = Router();
 
-// POST /api/threads/:threadId/messages
-router.post('/:threadId/messages', upload.array('files', 10), (req, res) => {
+const MOCK_RESPONSE = `Based on the Tax Cuts and Jobs Act of 2017, Section 1031 now applies exclusively to real property held for productive use in a trade or business or for investment. Personal property no longer qualifies for like-kind exchange treatment [1].
+
+Real property is generally defined under local law, but Treasury Regulations provide specific guidance. Distinct assets such as machinery or equipment, even if fixed to a building, may be treated as personal property rather than real property for these purposes [2].
+
+Therefore, the items listed in your schedule classified as personal property would trigger taxable gains upon sale, whereas the real estate components can still defer tax under §1031 [3]. It is crucial to segregate these assets accurately to determine the recognizable gain.
+
+**Key considerations:**
+- Only **real property** qualifies for like-kind exchange treatment post-TCJA
+- Personal property exchanges are now fully taxable events
+- A cost segregation study may be needed to properly classify assets`;
+
+const MOCK_CITATIONS: Citation[] = [
+  {
+    index: 1,
+    url: 'https://www.law.cornell.edu/uscode/text/26/1031',
+    title: '26 U.S. Code § 1031 - Exchange of real property',
+    snippet: 'Like-kind exchanges limited to real property not held primarily for sale.',
+  },
+  {
+    index: 2,
+    url: 'https://www.law.cornell.edu/cfr/text/26/1.1031(a)-3',
+    title: 'Treas. Reg. § 1.1031(a)-3',
+    snippet: 'Definition of real property for purposes of section 1031 like-kind exchanges.',
+  },
+  {
+    index: 3,
+    url: 'https://www.congress.gov/bill/115th-congress/house-bill/1/text',
+    title: 'TCJA Conference Report',
+    snippet: 'Legislative history regarding the limitation of like-kind exchanges.',
+  },
+];
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// POST /api/threads/:threadId/messages — SSE streaming
+router.post('/:threadId/messages', upload.array('files', 10), async (req, res) => {
   const { threadId } = req.params;
   const content = req.body.content as string;
   const files = req.files as Express.Multer.File[] | undefined;
@@ -73,48 +109,36 @@ router.post('/:threadId/messages', upload.array('files', 10), (req, res) => {
   // Update thread timestamp
   updateThreadTimestamp(threadId);
 
-  // Mock assistant response
-  const mockCitations: Citation[] = [
-    {
-      index: 1,
-      url: 'https://www.law.cornell.edu/uscode/text/26/1031',
-      title: '26 U.S. Code § 1031 - Exchange of real property',
-      snippet: 'No gain or loss shall be recognized on the exchange of real property held for productive use.',
-    },
-    {
-      index: 2,
-      url: 'https://www.law.cornell.edu/cfr/text/26/1.1031(a)-1',
-      title: 'Treas. Reg. § 1.1031(a)-1',
-      snippet: 'Definition of real property for purposes of section 1031 like-kind exchanges.',
-    },
-  ];
+  // Set up SSE headers
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.flushHeaders();
 
-  const mockContent = `This is a mock response from Accordance AI. In a real implementation, this would come from the Perplexity API with streaming.
+  // Send user message event
+  res.write(`data: ${JSON.stringify({ type: 'user_message', message: { ...userMessage, attachments: getAttachmentsByMessageId(userMessage.id) } })}\n\n`);
 
-Here is some analysis with citations [1] referencing the relevant code section, and additional regulatory guidance [2] that supports this interpretation.
+  // Stream mock tokens with small delays
+  const words = MOCK_RESPONSE.split(' ');
+  let accumulated = '';
 
-**Key points:**
-- Point one with detailed analysis
-- Point two with supporting authority
-- Point three with practical implications`;
+  for (let i = 0; i < words.length; i++) {
+    accumulated += (i === 0 ? '' : ' ') + words[i];
+    res.write(`data: ${JSON.stringify({ type: 'token', content: words[i] + (i < words.length - 1 ? ' ' : '') })}\n\n`);
+    await sleep(30);
+  }
 
+  // Save assistant message to DB
   const assistantMessage = createMessage(
     threadId,
     'assistant',
-    mockContent,
-    JSON.stringify(mockCitations)
+    accumulated,
+    JSON.stringify(MOCK_CITATIONS)
   );
 
-  res.status(201).json({
-    userMessage: {
-      ...userMessage,
-      attachments: getAttachmentsByMessageId(userMessage.id),
-    },
-    assistantMessage: {
-      ...assistantMessage,
-      attachments: [],
-    },
-  });
+  // Send done event with full message and citations
+  res.write(`data: ${JSON.stringify({ type: 'done', message: { ...assistantMessage, attachments: [] }, citations: MOCK_CITATIONS })}\n\n`);
+  res.end();
 });
 
 export default router;
