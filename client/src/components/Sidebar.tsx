@@ -32,13 +32,15 @@ export default function Sidebar({
       }`}
     >
       <div className="p-4 border-b border-slate-200/50">
-        <div className="mb-6">
+        <div className={activeThreadId ? 'mb-6' : ''}>
           <SidebarHeader />
         </div>
-        <NewThreadButton onClick={() => {
-          onNewThread();
-          onCloseSidebar?.();
-        }} />
+        {activeThreadId && (
+          <NewThreadButton onClick={() => {
+            onNewThread();
+            onCloseSidebar?.();
+          }} />
+        )}
       </div>
       <ThreadList
         threads={threads}
