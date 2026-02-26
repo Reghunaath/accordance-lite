@@ -5,6 +5,8 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { initDb } from './db/index.js';
+import threadsRouter from './routes/threads.js';
+import messagesRouter from './routes/messages.js';
 
 dotenv.config({ path: path.resolve(fileURLToPath(import.meta.url), '../../../.env') });
 
@@ -27,6 +29,10 @@ app.use(express.json());
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok' });
 });
+
+// Routes
+app.use('/api/threads', threadsRouter);
+app.use('/api/threads', messagesRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
