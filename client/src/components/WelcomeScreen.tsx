@@ -50,9 +50,6 @@ export default function WelcomeScreen({ onSendMessage, onOpenSidebar }: WelcomeS
         </button>
       )}
       <div className="text-center mb-10 space-y-2">
-        <div className="inline-flex items-center justify-center size-12 rounded-xl bg-primary/5 text-primary mb-4">
-          <span className="material-symbols-outlined text-[28px]">smart_toy</span>
-        </div>
         <h2 className="text-3xl font-semibold text-slate-900 tracking-tight">
           {getGreeting()}, Reghunaath.
         </h2>
