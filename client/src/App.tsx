@@ -32,19 +32,19 @@ function App() {
     setChatMessages(activeMessages);
   }, [activeMessages, setChatMessages]);
 
-  const handleSendFromWelcome = async (content: string) => {
+  const handleSendFromWelcome = async (content: string, files?: File[]) => {
     try {
       const threadId = await createThread(content);
-      await sendMessage(threadId, content);
+      await sendMessage(threadId, content, files);
       await refreshThreads();
     } catch (err) {
       console.error('Failed to create thread:', err);
     }
   };
 
-  const handleSendFromChat = async (content: string) => {
+  const handleSendFromChat = async (content: string, files?: File[]) => {
     if (!activeThread) return;
-    await sendMessage(activeThread.id, content);
+    await sendMessage(activeThread.id, content, files);
     await refreshThreads();
   };
 

@@ -6,6 +6,7 @@ import { getThreadById, updateThreadTitle, updateThreadTimestamp } from '../db/t
 import { createMessage, getMessageCountByThreadId } from '../db/messages.js';
 import { createAttachment, getAttachmentsByMessageId } from '../db/attachments.js';
 import { streamPerplexityResponse } from '../services/perplexity.js';
+import { extractPdfText } from '../services/pdf.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadsDir = path.join(__dirname, '..', '..', 'uploads');
@@ -82,8 +83,24 @@ router.post('/:threadId/messages', upload.array('files', 10), async (req, res) =
   // Send user message event
   res.write(`data: ${JSON.stringify({ type: 'user_message', message: { ...userMessage, attachments: getAttachmentsByMessageId(userMessage.id) } })}\n\n`);
 
+  // Build enriched content with PDF text if attachments present
+  let enrichedContent = content.trim();
+  if (files && files.length > 0) {
+    const fileContexts: string[] = [];
+    for (const file of files) {
+      try {
+        const text = await extractPdfText(file.path);
+        fileContexts.push(`[Attached Document: ${file.originalname}]\n---\n${text}\n---`);
+      } catch (err) {
+        console.error(`Failed to extract text from ${file.originalname}:`, err);
+        fileContexts.push(`[Attached Document: ${file.originalname}]\n---\n(Could not extract text from this PDF)\n---`);
+      }
+    }
+    enrichedContent = fileContexts.join('\n\n') + '\n\n' + enrichedContent;
+  }
+
   try {
-    await streamPerplexityResponse(content.trim(), {
+    await streamPerplexityResponse(enrichedContent, {
       onToken: (token) => {
         res.write(`data: ${JSON.stringify({ type: 'token', content: token })}\n\n`);
       },

@@ -1,19 +1,23 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { getGreeting } from '../utils/greeting';
+import AttachmentPreview from './AttachmentPreview';
 
 interface WelcomeScreenProps {
-  onSendMessage: (content: string) => void;
+  onSendMessage: (content: string, files?: File[]) => void;
 }
 
 export default function WelcomeScreen({ onSendMessage }: WelcomeScreenProps) {
   const [input, setInput] = useState('');
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = () => {
     const trimmed = input.trim();
     if (!trimmed) return;
-    onSendMessage(trimmed);
+    onSendMessage(trimmed, selectedFiles.length > 0 ? selectedFiles : undefined);
     setInput('');
+    setSelectedFiles([]);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -22,6 +26,16 @@ export default function WelcomeScreen({ onSendMessage }: WelcomeScreenProps) {
       handleSubmit();
     }
   };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? []);
+    setSelectedFiles((prev) => [...prev, ...files]);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleRemoveFile = useCallback((index: number) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+  }, []);
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center p-6 pb-20 max-w-3xl mx-auto w-full">
@@ -53,10 +67,20 @@ export default function WelcomeScreen({ onSendMessage }: WelcomeScreenProps) {
               placeholder="How can Accordance help you today? e.g. 'Summarize the latest changes to Section 174 regarding R&E expenditures'"
             />
           </div>
+          <AttachmentPreview files={selectedFiles} onRemove={handleRemoveFile} />
           <div className="flex items-center justify-between px-4 py-3 bg-slate-50 border-t border-slate-100">
             <div className="flex items-center gap-2">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf"
+                multiple
+                className="hidden"
+                onChange={handleFileChange}
+              />
               <button
                 type="button"
+                onClick={() => fileInputRef.current?.click()}
                 className="flex items-center gap-2 text-slate-500 hover:text-primary hover:bg-white px-3 py-1.5 rounded text-sm font-medium transition-colors border border-transparent hover:border-slate-200 hover:shadow-sm"
               >
                 <span className="material-symbols-outlined text-[20px]">attach_file</span>
