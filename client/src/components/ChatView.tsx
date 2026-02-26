@@ -4,7 +4,7 @@ import ChatInput from './ChatInput';
 import UserMessage from './UserMessage';
 import AssistantMessage from './AssistantMessage';
 import StreamingIndicator from './StreamingIndicator';
-import type { Message } from '../types';
+import type { Message, Citation } from '../types';
 
 interface ChatViewProps {
   threadTitle: string;
@@ -39,13 +39,20 @@ export default function ChatView({
         className="flex-1 overflow-y-auto px-6 py-8 md:px-12 lg:px-24 xl:px-48 pb-48 scroll-smooth"
       >
         <div className="flex flex-col gap-8 max-w-4xl mx-auto">
-          {messages.map((msg) =>
-            msg.role === 'user' ? (
-              <UserMessage key={msg.id} message={msg} />
-            ) : (
-              <AssistantMessage key={msg.id} content={msg.content} />
-            )
-          )}
+          {messages.map((msg) => {
+            if (msg.role === 'user') {
+              return <UserMessage key={msg.id} message={msg} />;
+            }
+            const citations: Citation[] = msg.citations ? JSON.parse(msg.citations) : [];
+            return (
+              <AssistantMessage
+                key={msg.id}
+                content={msg.content}
+                citations={citations}
+                messageId={msg.id}
+              />
+            );
+          })}
           {isStreaming && streamingContent && (
             <AssistantMessage content={streamingContent} isStreaming />
           )}
