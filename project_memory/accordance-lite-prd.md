@@ -439,13 +439,13 @@ The app should be runnable in under 2 minutes. No Docker, no external databases,
 
 Follow this order. Complete each step fully before moving to the next.
 
-1. **Project scaffolding:** Set up the monorepo structure, install dependencies, configure TypeScript, Tailwind, and dev scripts (concurrent client + server).
-2. **Database:** Set up SQLite with better-sqlite3. Create tables. Write query functions for threads and messages.
-3. **API routes:** Implement all Express endpoints (threads CRUD, message creation). Test with curl or Postman. No Perplexity integration yet — return mock assistant responses.
-4. **Perplexity integration:** Wire up the Perplexity API. Implement streaming via SSE. Parse citations from the response.
-5. **Frontend layout:** Build the two-column layout, sidebar, and main content shell. No functionality yet, just the visual structure.
-6. **Thread management:** Connect sidebar to API. List threads, create new threads, switch between threads, delete threads.
-7. **Chat interface:** Build the message list, chat input, send flow. Connect to the streaming endpoint. Render messages with markdown.
-8. **Citations UI:** Render inline citation badges. Build the sources section. Wire up click-to-scroll.
+1. **Project scaffolding:** Set up the monorepo structure, install dependencies, configure TypeScript, Tailwind, and dev scripts (concurrent client + server). ✅
+2. **Database:** Set up SQLite with better-sqlite3. Create tables. Write query functions for threads and messages. ✅
+3. **API routes:** Implement all Express endpoints (threads CRUD, message creation). Test with curl or Postman. No Perplexity integration yet — return mock assistant responses. ✅
+4. **Frontend layout:** Build the two-column layout, sidebar, and main content shell. No functionality yet, just the visual structure.
+5. **Thread management:** Connect sidebar to API. List threads, create new threads, switch between threads, delete threads.
+6. **Chat interface:** Build the message list, chat input, send flow. Connect to mock SSE streaming endpoint. Render messages with markdown.
+7. **Citations UI:** Render inline citation badges. Build the sources section. Wire up click-to-scroll.
+8. **Perplexity integration:** Swap mock responses for real Perplexity API. Wire up streaming via SSE. Parse citations from the response.
 9. **File attachment:** Build the file picker, attachment preview chips, multipart upload, and file indicator in sent messages.
 10. **Polish:** Loading states, error states, empty states, transitions, responsive behavior, typography fine-tuning, spacing adjustments.

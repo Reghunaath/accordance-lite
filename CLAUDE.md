@@ -54,14 +54,14 @@ Follow this exact order. Complete each step fully before moving to the next.
 **⚠️ IMPORTANT: After completing each step, restart the client and server, then STOP and inform me what was done. Wait for my approval before starting the next step. Do not proceed to the next step without my explicit go-ahead.**
 **⚠️ IMPORTANT: After each step is coded and approved, commit all changes and push to GitHub.**
 
-1. Project scaffolding (monorepo, deps, TS config, Tailwind, dev scripts)
-2. Database setup (SQLite tables, query functions)
-3. API routes (threads CRUD, message creation with mock responses)
-4. Perplexity integration (streaming via SSE, citation parsing)
-5. Frontend layout (sidebar, main content shell, no functionality)
-6. Thread management (list, create, switch, delete)
-7. Chat interface (message list, input, send, streaming render, markdown)
-8. Citations UI (inline badges, SOURCES section, click-to-scroll)
+1. Project scaffolding (monorepo, deps, TS config, Tailwind, dev scripts) ✅
+2. Database setup (SQLite tables, query functions) ✅
+3. API routes (threads CRUD, message creation with mock responses) ✅
+4. Frontend layout (sidebar, main content shell, no functionality)
+5. Thread management (list, create, switch, delete)
+6. Chat interface (message list, input, send, mock SSE streaming, markdown)
+7. Citations UI (inline badges, SOURCES section, click-to-scroll)
+8. Perplexity integration (swap mock for real API, streaming via SSE, citation parsing)
 9. File attachment (picker, preview chips, upload, PDF text extraction)
 10. Polish (loading/error/empty states, transitions, responsive, typography)
 
