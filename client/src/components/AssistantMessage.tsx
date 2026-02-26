@@ -32,7 +32,12 @@ export default function AssistantMessage({
   messageId = '',
   isStreaming = false,
 }: AssistantMessageProps) {
-  const hasCitations = citations.length > 0 && messageId;
+  // Extract which citation indices actually appear in the content
+  const referencedIndices = new Set(
+    (content.match(/\[(\d+)\]/g) ?? []).map((m) => parseInt(m.slice(1, -1), 10))
+  );
+  const referencedCitations = citations.filter((c) => referencedIndices.has(c.index));
+  const hasInlineCitations = referencedCitations.length > 0 && !!messageId;
 
   return (
     <div className="flex flex-col gap-2">
@@ -44,7 +49,7 @@ export default function AssistantMessage({
       </div>
       <div className="bg-white border border-slate-100 p-6 rounded-2xl rounded-tl-sm shadow-sm text-slate-700">
         <div className="prose prose-slate max-w-none text-base leading-7">
-          {hasCitations
+          {hasInlineCitations
             ? renderContentWithCitations(content, messageId)
             : <ReactMarkdown>{content}</ReactMarkdown>
           }
@@ -52,8 +57,8 @@ export default function AssistantMessage({
             <span className="inline-block w-2 h-5 bg-primary/60 animate-pulse ml-0.5 align-text-bottom" />
           )}
         </div>
-        {hasCitations && (
-          <SourcesList citations={citations} messageId={messageId} />
+        {hasInlineCitations && (
+          <SourcesList citations={referencedCitations} messageId={messageId} />
         )}
       </div>
     </div>

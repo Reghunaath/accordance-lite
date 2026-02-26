@@ -19,3 +19,16 @@ Thumbs.db
 
 # Logs
 *.log
+
+# SQLite WAL files
+server/*.db-shm
+server/*.db-wal
+
+# Vite cache
+client/.vite/
+
+# Claude Code
+.claude/
+
+# Project memory (reference files)
+project_memory/
