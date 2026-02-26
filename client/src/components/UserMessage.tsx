@@ -11,7 +11,7 @@ export default function UserMessage({ message }: UserMessageProps) {
         <span className="text-xs text-slate-400 font-medium">You</span>
       </div>
       <div className="max-w-[85%] md:max-w-[70%] bg-slate-100 text-slate-800 p-5 rounded-2xl rounded-tr-sm shadow-sm">
-        <p className="text-base leading-relaxed whitespace-pre-wrap">{message.content}</p>
+        <p className="text-base leading-7 whitespace-pre-wrap">{message.content}</p>
       </div>
       {message.attachments.length > 0 && (
         <div className="flex flex-col gap-2">

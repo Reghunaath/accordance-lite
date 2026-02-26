@@ -23,7 +23,8 @@ export default function AttachmentPreview({ files, onRemove }: AttachmentPreview
           <button
             type="button"
             onClick={() => onRemove(i)}
-            className="ml-1 text-slate-400 hover:text-slate-600 transition-colors"
+            className="ml-1 text-slate-400 hover:text-slate-600 transition-colors rounded focus-visible:ring-2 focus-visible:ring-primary/40 outline-none"
+            aria-label={`Remove ${file.name}`}
           >
             <span className="material-symbols-outlined text-[18px]">close</span>
           </button>

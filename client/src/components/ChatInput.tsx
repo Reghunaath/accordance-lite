@@ -47,7 +47,7 @@ export default function ChatInput({ onSendMessage, disabled = false }: ChatInput
   return (
     <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-bg-light via-bg-light to-transparent pt-10 pb-6 px-6 md:px-12 lg:px-24 xl:px-48 z-20">
       <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col p-2 bg-white border border-slate-200 rounded-xl shadow-xl">
+        <div className="flex flex-col p-2 bg-white border border-slate-200 rounded-xl shadow-xl transition-colors focus-within:border-primary/40">
           <AttachmentPreview files={selectedFiles} onRemove={handleRemoveFile} />
           <div className="flex items-end gap-2 p-2">
             <input
@@ -61,8 +61,8 @@ export default function ChatInput({ onSendMessage, disabled = false }: ChatInput
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="p-2 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-lg transition-colors shrink-0"
-              title="Attach file"
+              className="p-2 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-lg transition-colors shrink-0 focus-visible:ring-2 focus-visible:ring-primary/40 outline-none"
+              aria-label="Attach file"
             >
               <span className="material-symbols-outlined">attach_file</span>
             </button>
@@ -80,7 +80,8 @@ export default function ChatInput({ onSendMessage, disabled = false }: ChatInput
             <button
               onClick={handleSubmit}
               disabled={!input.trim() || disabled}
-              className="bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg p-2 shadow-lg shadow-primary/20 transition-all flex items-center justify-center shrink-0 mb-0.5"
+              className="bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg p-2 shadow-lg shadow-primary/20 transition-all flex items-center justify-center shrink-0 mb-0.5 focus-visible:ring-2 focus-visible:ring-primary/40 outline-none"
+              aria-label="Send message"
             >
               <span className="material-symbols-outlined">arrow_upward</span>
             </button>
