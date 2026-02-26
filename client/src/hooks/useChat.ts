@@ -16,12 +16,18 @@ interface SSEDoneEvent {
   message: Message;
 }
 
-type SSEEvent = SSEUserMessageEvent | SSETokenEvent | SSEDoneEvent;
+interface SSEErrorEvent {
+  type: 'error';
+  message: string;
+}
+
+type SSEEvent = SSEUserMessageEvent | SSETokenEvent | SSEDoneEvent | SSEErrorEvent;
 
 interface UseChatReturn {
   messages: Message[];
   streamingContent: string;
   isStreaming: boolean;
+  error: string | null;
   sendMessage: (threadId: string, content: string, files?: File[]) => Promise<void>;
   setMessages: (messages: Message[]) => void;
 }
@@ -30,6 +36,7 @@ export function useChat(): UseChatReturn {
   const [messages, setMessages] = useState<Message[]>([]);
   const [streamingContent, setStreamingContent] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
   const sendMessage = useCallback(async (threadId: string, content: string, files?: File[]) => {
@@ -51,6 +58,7 @@ export function useChat(): UseChatReturn {
 
     setIsStreaming(true);
     setStreamingContent('');
+    setError(null);
 
     try {
       const response = await fetch(`/api/threads/${threadId}/messages`, {
@@ -92,6 +100,10 @@ export function useChat(): UseChatReturn {
             setMessages((prev) => [...prev, event.message]);
             setStreamingContent('');
             setIsStreaming(false);
+          } else if (event.type === 'error') {
+            setError(event.message);
+            setStreamingContent('');
+            setIsStreaming(false);
           }
         }
       }
@@ -107,6 +119,7 @@ export function useChat(): UseChatReturn {
     messages,
     streamingContent,
     isStreaming,
+    error,
     sendMessage,
     setMessages,
   };

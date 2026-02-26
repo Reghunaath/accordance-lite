@@ -12,6 +12,7 @@ interface ChatViewProps {
   messages: Message[];
   streamingContent: string;
   isStreaming: boolean;
+  error: string | null;
   onSendMessage: (content: string) => void;
 }
 
@@ -21,6 +22,7 @@ export default function ChatView({
   messages,
   streamingContent,
   isStreaming,
+  error,
   onSendMessage,
 }: ChatViewProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -58,6 +60,11 @@ export default function ChatView({
           )}
           {isStreaming && !streamingContent && (
             <StreamingIndicator />
+          )}
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 text-sm">
+              {error}
+            </div>
           )}
         </div>
       </div>

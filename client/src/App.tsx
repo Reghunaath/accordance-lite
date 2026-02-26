@@ -22,6 +22,7 @@ function App() {
     messages: chatMessages,
     streamingContent,
     isStreaming,
+    error: chatError,
     sendMessage,
     setMessages: setChatMessages,
   } = useChat();
@@ -73,6 +74,7 @@ function App() {
             messages={chatMessages}
             streamingContent={streamingContent}
             isStreaming={isStreaming}
+            error={chatError}
             onSendMessage={handleSendFromChat}
           />
         ) : (
