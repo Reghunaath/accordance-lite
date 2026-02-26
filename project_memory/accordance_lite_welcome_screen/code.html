@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Accordance Lite Welcome Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }.sidebar-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar-scroll::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body class="bg-white text-slate-900 font-display antialiased h-screen overflow-hidden flex">
+<aside class="w-[280px] h-full flex flex-col bg-background-light border-r border-slate-200 shrink-0">
+<div class="p-4 border-b border-slate-200/50">
+<div class="flex items-center gap-3 mb-6">
+<div class="flex items-center justify-center size-8 rounded bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-[20px]">account_balance</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 text-sm font-semibold leading-none">Accordance Lite</h1>
+<span class="text-slate-500 text-xs mt-0.5">Tax Research Assistant</span>
+</div>
+</div>
+<button class="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg bg-white border border-slate-200 hover:border-primary/30 hover:shadow-sm transition-all group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary text-[20px]">add</span>
+<span class="text-slate-700 text-sm font-medium">New Thread</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto sidebar-scroll p-3 flex flex-col gap-1">
+<div class="text-xs font-medium text-slate-400 px-3 py-2 uppercase tracking-wider">Recent</div>
+<button class="flex flex-col gap-1 px-3 py-3 rounded-lg bg-white border border-slate-200 shadow-sm text-left transition-colors">
+<div class="flex items-center justify-between w-full">
+<span class="text-slate-900 text-sm font-medium truncate w-[180px]">Taxability of SaaS Contracts</span>
+</div>
+<span class="text-slate-400 text-xs">2 hours ago</span>
+</button>
+<button class="flex flex-col gap-1 px-3 py-3 rounded-lg hover:bg-slate-200/50 text-left transition-colors group">
+<div class="flex items-center justify-between w-full">
+<span class="text-slate-700 text-sm font-medium truncate w-[180px] group-hover:text-slate-900">IRC §1031 Exchange Requirements</span>
+</div>
+<span class="text-slate-400 text-xs">Yesterday</span>
+</button>
+<button class="flex flex-col gap-1 px-3 py-3 rounded-lg hover:bg-slate-200/50 text-left transition-colors group">
+<div class="flex items-center justify-between w-full">
+<span class="text-slate-700 text-sm font-medium truncate w-[180px] group-hover:text-slate-900">R&amp;D Credit Qualification</span>
+</div>
+<span class="text-slate-400 text-xs">2 days ago</span>
+</button>
+<button class="flex flex-col gap-1 px-3 py-3 rounded-lg hover:bg-slate-200/50 text-left transition-colors group">
+<div class="flex items-center justify-between w-full">
+<span class="text-slate-700 text-sm font-medium truncate w-[180px] group-hover:text-slate-900">Nexus Thresholds by State</span>
+</div>
+<span class="text-slate-400 text-xs">3 days ago</span>
+</button>
+<button class="flex flex-col gap-1 px-3 py-3 rounded-lg hover:bg-slate-200/50 text-left transition-colors group">
+<div class="flex items-center justify-between w-full">
+<span class="text-slate-700 text-sm font-medium truncate w-[180px] group-hover:text-slate-900">Crypto Asset Depreciation</span>
+</div>
+<span class="text-slate-400 text-xs">Last week</span>
+</button>
+<button class="flex flex-col gap-1 px-3 py-3 rounded-lg hover:bg-slate-200/50 text-left transition-colors group">
+<div class="flex items-center justify-between w-full">
+<span class="text-slate-700 text-sm font-medium truncate w-[180px] group-hover:text-slate-900">Foreign Tax Credit Limits</span>
+</div>
+<span class="text-slate-400 text-xs">Last week</span>
+</button>
+<button class="flex flex-col gap-1 px-3 py-3 rounded-lg hover:bg-slate-200/50 text-left transition-colors group">
+<div class="flex items-center justify-between w-full">
+<span class="text-slate-700 text-sm font-medium truncate w-[180px] group-hover:text-slate-900">Section 179 Expensing 2024</span>
+</div>
+<span class="text-slate-400 text-xs">2 weeks ago</span>
+</button>
+</div>
+<div class="p-4 border-t border-slate-200 bg-background-light">
+<button class="flex items-center gap-3 w-full p-2 rounded-lg hover:bg-white hover:shadow-sm transition-all text-left">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-9 bg-slate-200 border border-slate-300 relative overflow-hidden" data-alt="Professional headshot of a smiling man" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBEdPeseZvCTvwx0gSvldBzpaW9iHYbTOgXYf2F3FzS8SsGxbYrGVnl3dF6xkk2oLlJcgyfJSCff-g5gix0CPDduWvMhFidJYFXti1NwIXm4Vi0tXaiCTiCRjoF9Qui2vzJ-BN5Qr2APdiihQVrWtDZpY4RbOzmgstPFZuBdaMwJPFBRQ4gah1plN-rZXFPx03tC7N1Msm6SDqPR-CQkkueqT3yP40h2w8zRDviAfeGNaglHnuIzRVlqga_A9dn0LV2gg3g995prA5t");'>
+</div>
+<div class="flex flex-col flex-1 min-w-0">
+<span class="text-slate-900 text-sm font-semibold truncate">David Yue</span>
+<span class="text-slate-500 text-xs truncate">dy@accordance.ai</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-[20px]">settings</span>
+</button>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-full bg-white relative">
+<header class="h-16 flex items-center justify-end px-8 shrink-0">
+</header>
+<div class="flex-1 flex flex-col items-center justify-center p-6 pb-20 max-w-3xl mx-auto w-full">
+<div class="text-center mb-10 space-y-2">
+<div class="inline-flex items-center justify-center size-12 rounded-xl bg-primary/5 text-primary mb-4">
+<span class="material-symbols-outlined text-[28px]">smart_toy</span>
+</div>
+<h2 class="text-3xl font-semibold text-slate-900 tracking-tight">Good afternoon, David.</h2>
+<p class="text-slate-500 text-lg font-light">How can I be of service today?</p>
+</div>
+<div class="w-full bg-white border border-slate-200 shadow-lg shadow-slate-200/40 rounded-lg overflow-hidden transition-shadow focus-within:shadow-xl focus-within:shadow-primary/5 focus-within:border-primary/40">
+<form class="flex flex-col" onsubmit="event.preventDefault();">
+<div class="p-4">
+<textarea class="w-full resize-none bg-transparent text-slate-900 placeholder-slate-400 text-base focus:outline-none min-h-[120px]" placeholder="How can Accordance help you today? e.g. 'Summarize the latest changes to Section 174 regarding R&amp;E expenditures'"></textarea>
+</div>
+<div class="flex items-center justify-between px-4 py-3 bg-slate-50 border-t border-slate-100">
+<div class="flex items-center gap-2">
+<button aria-label="Attach File" class="flex items-center gap-2 text-slate-500 hover:text-primary hover:bg-white px-3 py-1.5 rounded text-sm font-medium transition-colors border border-transparent hover:border-slate-200 hover:shadow-sm" type="button">
+<span class="material-symbols-outlined text-[20px]">attach_file</span>
+<span class="hidden sm:inline">Attach File</span>
+</button>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-xs text-slate-400 hidden sm:inline">Press Enter to send</span>
+<button class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors shadow-sm flex items-center gap-2" type="submit">
+<span>Ask Accordance</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</form>
+</div>
+<p class="mt-6 text-xs text-slate-400 text-center max-w-lg">
+            Accordance Lite may produce inaccurate information about people, places, or facts. Always verify important information.
+        </p>
+</div>
+</main>
+
+</body></html>
