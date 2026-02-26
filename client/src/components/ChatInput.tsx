@@ -1,13 +1,16 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import AttachmentPreview from './AttachmentPreview';
 
 interface ChatInputProps {
-  onSendMessage: (content: string) => void;
+  onSendMessage: (content: string, files?: File[]) => void;
   disabled?: boolean;
 }
 
 export default function ChatInput({ onSendMessage, disabled = false }: ChatInputProps) {
   const [input, setInput] = useState('');
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -19,8 +22,9 @@ export default function ChatInput({ onSendMessage, disabled = false }: ChatInput
   const handleSubmit = () => {
     const trimmed = input.trim();
     if (!trimmed || disabled) return;
-    onSendMessage(trimmed);
+    onSendMessage(trimmed, selectedFiles.length > 0 ? selectedFiles : undefined);
     setInput('');
+    setSelectedFiles([]);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -30,13 +34,33 @@ export default function ChatInput({ onSendMessage, disabled = false }: ChatInput
     }
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files ?? []);
+    setSelectedFiles((prev) => [...prev, ...files]);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleRemoveFile = useCallback((index: number) => {
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+  }, []);
+
   return (
     <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-bg-light via-bg-light to-transparent pt-10 pb-6 px-6 md:px-12 lg:px-24 xl:px-48 z-20">
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-col p-2 bg-white border border-slate-200 rounded-xl shadow-xl">
+          <AttachmentPreview files={selectedFiles} onRemove={handleRemoveFile} />
           <div className="flex items-end gap-2 p-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".pdf"
+              multiple
+              className="hidden"
+              onChange={handleFileChange}
+            />
             <button
               type="button"
+              onClick={() => fileInputRef.current?.click()}
               className="p-2 text-slate-400 hover:text-primary hover:bg-slate-50 rounded-lg transition-colors shrink-0"
               title="Attach file"
             >

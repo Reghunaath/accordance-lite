@@ -26,4 +26,10 @@
     background-color: #cbd5e1;
     border-radius: 20px;
   }
+
+  /* Prevent code blocks from overflowing in assistant messages */
+  .prose pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
 }

@@ -13,7 +13,7 @@ interface ChatViewProps {
   streamingContent: string;
   isStreaming: boolean;
   error: string | null;
-  onSendMessage: (content: string) => void;
+  onSendMessage: (content: string, files?: File[]) => void;
 }
 
 export default function ChatView({
