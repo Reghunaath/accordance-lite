@@ -9,7 +9,12 @@ export default function UserFooter() {
           <span className="text-slate-900 text-sm font-semibold truncate">Reghunaath Ajith</span>
           <span className="text-slate-500 text-xs truncate">ajithkumarahila.r@northeastern.edu</span>
         </div>
-        <span className="material-symbols-outlined text-slate-400 text-[20px]">settings</span>
+        <button
+          className="text-slate-400 hover:text-slate-600 transition-colors rounded-lg p-1 focus-visible:ring-2 focus-visible:ring-primary/40 outline-none"
+          aria-label="Settings (coming soon)"
+        >
+          <span className="material-symbols-outlined text-[20px]">settings</span>
+        </button>
       </div>
     </div>
   );

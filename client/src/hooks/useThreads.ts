@@ -6,6 +6,8 @@ interface UseThreadsReturn {
   threads: Thread[];
   activeThread: Thread | null;
   loading: boolean;
+  error: string | null;
+  threadLoading: boolean;
   selectThread: (id: string) => Promise<void>;
   createThread: (content: string) => Promise<string>;
   deleteThread: (id: string) => Promise<void>;
@@ -20,13 +22,17 @@ export function useThreads(): UseThreadsReturn {
   const [activeThread, setActiveThread] = useState<Thread | null>(null);
   const [activeMessages, setActiveMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [threadLoading, setThreadLoading] = useState(false);
 
   const loadThreads = useCallback(async () => {
     try {
+      setError(null);
       const { threads } = await api.fetchThreads();
       setThreads(threads);
     } catch (err) {
       console.error('Failed to load threads:', err);
+      setError('Failed to load threads.');
     } finally {
       setLoading(false);
     }
@@ -38,16 +44,21 @@ export function useThreads(): UseThreadsReturn {
 
   const selectThread = useCallback(async (id: string) => {
     try {
+      setThreadLoading(true);
       const { thread, messages } = await api.fetchThread(id);
       setActiveThread(thread);
       setActiveMessages(messages);
     } catch (err) {
       console.error('Failed to load thread:', err);
+      throw err;
+    } finally {
+      setThreadLoading(false);
     }
   }, []);
 
   const createNewThread = useCallback(async (content: string): Promise<string> => {
-    const { thread } = await api.createThread(content.substring(0, 60));
+    const title = content.length > 60 ? content.substring(0, 60) + '...' : content;
+    const { thread } = await api.createThread(title);
     setActiveThread(thread);
     setActiveMessages([]);
     return thread.id;
@@ -63,6 +74,7 @@ export function useThreads(): UseThreadsReturn {
       }
     } catch (err) {
       console.error('Failed to delete thread:', err);
+      throw err;
     }
   }, [activeThread]);
 
@@ -76,6 +88,8 @@ export function useThreads(): UseThreadsReturn {
     activeThread,
     activeMessages,
     loading,
+    error,
+    threadLoading,
     selectThread,
     createThread: createNewThread,
     deleteThread: handleDeleteThread,

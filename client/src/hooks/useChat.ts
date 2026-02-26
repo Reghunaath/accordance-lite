@@ -110,6 +110,7 @@ export function useChat(): UseChatReturn {
     } catch (err) {
       if (err instanceof DOMException && err.name === 'AbortError') return;
       console.error('Streaming error:', err);
+      setError('Failed to send message. Please try again.');
       setIsStreaming(false);
       setStreamingContent('');
     }

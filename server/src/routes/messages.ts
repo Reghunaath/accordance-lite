@@ -67,7 +67,8 @@ router.post('/:threadId/messages', upload.array('files', 10), async (req, res) =
   // If first message in thread, update thread title
   const messageCount = getMessageCountByThreadId(threadId);
   if (messageCount === 1) {
-    const title = content.trim().substring(0, 60);
+    const trimmed = content.trim();
+    const title = trimmed.length > 60 ? trimmed.substring(0, 60) + '...' : trimmed;
     updateThreadTitle(threadId, title);
   }
 

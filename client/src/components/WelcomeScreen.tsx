@@ -4,9 +4,10 @@ import AttachmentPreview from './AttachmentPreview';
 
 interface WelcomeScreenProps {
   onSendMessage: (content: string, files?: File[]) => void;
+  onOpenSidebar?: () => void;
 }
 
-export default function WelcomeScreen({ onSendMessage }: WelcomeScreenProps) {
+export default function WelcomeScreen({ onSendMessage, onOpenSidebar }: WelcomeScreenProps) {
   const [input, setInput] = useState('');
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -38,7 +39,16 @@ export default function WelcomeScreen({ onSendMessage }: WelcomeScreenProps) {
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-6 pb-20 max-w-3xl mx-auto w-full">
+    <div className="flex-1 flex flex-col items-center justify-center p-6 pb-20 max-w-3xl mx-auto w-full relative">
+      {onOpenSidebar && (
+        <button
+          onClick={onOpenSidebar}
+          className="absolute top-4 left-4 md:hidden p-1.5 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-primary/40 outline-none"
+          aria-label="Open sidebar"
+        >
+          <span className="material-symbols-outlined text-[22px]">menu</span>
+        </button>
+      )}
       <div className="text-center mb-10 space-y-2">
         <div className="inline-flex items-center justify-center size-12 rounded-xl bg-primary/5 text-primary mb-4">
           <span className="material-symbols-outlined text-[28px]">smart_toy</span>
@@ -81,7 +91,8 @@ export default function WelcomeScreen({ onSendMessage }: WelcomeScreenProps) {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="flex items-center gap-2 text-slate-500 hover:text-primary hover:bg-white px-3 py-1.5 rounded text-sm font-medium transition-colors border border-transparent hover:border-slate-200 hover:shadow-sm"
+                className="flex items-center gap-2 text-slate-500 hover:text-primary hover:bg-white px-3 py-1.5 rounded text-sm font-medium transition-colors border border-transparent hover:border-slate-200 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-primary/40 outline-none"
+                aria-label="Attach file"
               >
                 <span className="material-symbols-outlined text-[20px]">attach_file</span>
                 <span className="hidden sm:inline">Attach File</span>
@@ -92,7 +103,8 @@ export default function WelcomeScreen({ onSendMessage }: WelcomeScreenProps) {
               <button
                 type="submit"
                 disabled={!input.trim()}
-                className="bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded text-sm font-medium transition-colors shadow-sm flex items-center gap-2"
+                className="bg-primary hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2 rounded text-sm font-medium transition-colors shadow-sm flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-primary/40 outline-none"
+                aria-label="Submit question"
               >
                 <span>Ask Accordance</span>
                 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>

@@ -16,11 +16,12 @@ export default function CitationBadge({ index, messageId }: CitationBadgeProps) 
   };
 
   return (
-    <sup
+    <button
       onClick={handleClick}
-      className="inline-flex align-top cursor-pointer text-primary hover:underline font-semibold bg-primary/10 px-1 rounded ml-0.5 text-xs select-none"
+      className="align-super inline-flex cursor-pointer text-primary hover:underline font-semibold bg-primary/10 px-1 rounded ml-0.5 text-xs select-none focus-visible:ring-2 focus-visible:ring-primary/40 outline-none"
+      aria-label={`Go to source ${index}`}
     >
       [{index}]
-    </sup>
+    </button>
   );
 }
